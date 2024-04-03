@@ -20,8 +20,16 @@ class Const {
   static const String fav = '${assets}fav.png';
 
   //Salad Asset-
-  static const String salad1 = '${assets}salad1.png';
-  static const String salad2 = '${assets}salad2.png';
+  static const String salad1 = 'asset/img/salad/salad1.png';
+  static const String salad2 = 'asset/img/salad/salad2.png';
+  static const String salad3 = 'asset/img/salad/salad3.jpeg';
+  static const String salad4 = 'asset/img/salad/salad4.jpeg';
+  static const String salad5 = 'asset/img/salad/salad5.jpeg';
+  static const String salad6 = 'asset/img/salad/salad6.jpeg';
+  static const String salad7 = 'asset/img/salad/salad7.jpeg';
+  static const String salad8 = 'asset/img/salad/salad8.jpeg';
+  static const String salad9 = 'asset/img/salad/salad9.jpeg';
+  static const String salad10 = 'asset/img/salad/salad10.jpeg';
 
 //Colors--
 
@@ -30,6 +38,7 @@ class Const {
   }
 
   static const String appColor = '#FFA451';
+  static const String addbtnColor = '#FFF2E7';
   static const String editTextColor = '#F3F1F1';
 
   //String Portion
@@ -72,5 +81,30 @@ class Const {
     fontSize: 23,
     color: Colors.black,
     fontFamily: "jost",
+  );
+
+  static const TextStyle h11HeaderText = TextStyle(
+    fontSize: 29,
+    color: Colors.black,
+    fontFamily: "jost",
+  );
+
+  static Container mContainer = Container(
+    width: 100,
+    height: 40,
+    decoration: BoxDecoration(
+        color: Colors.white, borderRadius: BorderRadius.circular(10)),
+    child: const Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Icon(Icons.arrow_back_ios),
+        ),
+        Text(
+          "Go Back",
+          style: TextStyle(fontFamily: 'jost', fontSize: 18),
+        )
+      ],
+    ),
   );
 }

@@ -11,8 +11,22 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController = TextEditingController();
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose(); // Dispose the tab controller
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,20 +96,88 @@ class _HomeScreenState extends State<HomeScreen> {
                 Const.recommend,
                 style: Const.h1HeaderText,
               ),
-              _buildAllProduct(),
+              Expanded(flex: 1, child: _buildAllProduct()),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: 50,
+                child: TabBar(
+                  controller: _tabController,
+                  labelStyle: const TextStyle(
+                      fontSize: 23,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                  unselectedLabelStyle:
+                      const TextStyle(fontSize: 15, color: Colors.grey),
+                  indicatorColor: Const.hexToColor(Const.appColor),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  tabs: const [
+                    Tab(
+                      text: 'Hottest',
+                    ),
+                    Tab(text: 'Popular'),
+                    Tab(text: 'New Combo'),
+                    Tab(text: 'Top'),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildAllProductTabs(),
+                    _buildAllProductTabs(),
+                    _buildAllProductTabs(),
+                    _buildAllProductTabs(),
+                  ],
+                ),
+              ),
             ]),
       ),
     );
   }
-
-  _buildAllProduct() => GridView.builder(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: MyInfoModel.myInfoAllList.length,
-        itemBuilder: (context, index) {
-          final allItem = MyInfoModel.myInfoAllList[index];
-
-          return CardWidget(infoModel: allItem);
-        },
-      );
 }
+
+Widget _buildCustomTab(String title) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: Text(
+      title,
+      style: TextStyle(
+        fontSize: 20,
+        color: Const.hexToColor(Const.appColor),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+}
+
+_buildAllProduct() => GridView.builder(
+    shrinkWrap: true,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 1,
+      mainAxisSpacing: 10.0,
+      crossAxisSpacing: 10.0,
+    ),
+    itemCount: MySaladModel.myInfoAllList.length,
+    itemBuilder: (context, index) {
+      final allItem = MySaladModel.myInfoAllList[index];
+
+      return CardWidget(infoModel: allItem);
+    },
+    scrollDirection: Axis.horizontal);
+
+_buildAllProductTabs() => GridView.builder(
+    shrinkWrap: true,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      mainAxisSpacing: 10.0,
+      crossAxisSpacing: 10.0,
+    ),
+    itemCount: MySaladModel.myInfoAllList.length,
+    itemBuilder: (context, index) {
+      final allItem = MySaladModel.myInfoAllList[index];
+
+      return CardWidget(infoModel: allItem);
+    },
+    scrollDirection: Axis.vertical);

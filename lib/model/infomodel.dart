@@ -1,25 +1,57 @@
 import '../assets/const.dart';
 
-class InfoModel {
+class SaladModel {
   String saladImage = "";
   String saladName = "";
   String saladPrice = "";
 
-  InfoModel({
+  SaladModel({
     required this.saladImage,
     required this.saladName,
     required this.saladPrice,
   });
 }
 
-class MyInfoModel {
-  static List<InfoModel> myInfoAllList = [
-    InfoModel(
+class MySaladModel {
+  static List<SaladModel> myInfoAllList = [
+    SaladModel(
         saladImage: Const.salad1,
         saladName: "Honey-Lime Combo",
         saladPrice: '2000'),
-    InfoModel(
+    SaladModel(
         saladImage: Const.salad2,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad3,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad4,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad5,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad6,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad7,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad8,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad9,
+        saladName: "Berry-Mango Combo",
+        saladPrice: '2000'),
+    SaladModel(
+        saladImage: Const.salad10,
         saladName: "Berry-Mango Combo",
         saladPrice: '2000'),
   ];
