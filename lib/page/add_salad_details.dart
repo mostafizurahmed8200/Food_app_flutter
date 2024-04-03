@@ -83,13 +83,7 @@ class AddSaladDetails extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const _RowAddingCard(),
-                        _RowMoneyAdd(saladPrice: saladPrice),
-                      ],
-                    ),
+                    _RowAddingCard(saladPrice),
                     const SizedBox(
                       height: 20,
                     ),
@@ -107,38 +101,9 @@ class AddSaladDetails extends StatelessWidget {
   }
 }
 
-class _RowMoneyAdd extends StatelessWidget {
-  final String saladPrice;
-
-  const _RowMoneyAdd({required this.saladPrice});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 35,
-          height: 35,
-          child: Icon(
-            Icons.currency_rupee,
-            size: 20,
-            color: Const.hexToColor(Const.appColor),
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          saladPrice,
-          style: Const.headerText,
-        ),
-      ],
-    );
-  }
-}
-
 class _RowAddingCard extends StatefulWidget {
-  const _RowAddingCard();
+  final String saladPrices;
+  const _RowAddingCard(this.saladPrices);
 
   @override
   State<_RowAddingCard> createState() => _RowAddingCardState();
@@ -147,65 +112,109 @@ class _RowAddingCard extends StatefulWidget {
 class _RowAddingCardState extends State<_RowAddingCard> {
   int value = 1;
   String getValue = '1';
+  String finalValue = '';
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            setState(() {
-              if (value > 1) {
-                value--;
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    setState(() {
+                      if (value > 1) {
+                        value--;
+                        getValue = value.toString();
+                        int fGetValue = int.parse(getValue);
 
-                getValue = value.toString();
-              } else {
-                getValue = '1';
-              }
-            });
-          },
-          child: SizedBox(
-            width: 35,
-            height: 35,
-            child: CircleAvatar(
-              backgroundColor: Const.hexToColor(Const.editTextColor),
-              child: const Icon(
-                Icons.remove,
-                color: Colors.black,
-              ),
+                        int finalValueInt =
+                            fGetValue * int.parse(widget.saladPrices);
+                        finalValue = (finalValueInt.toString());
+                      } else {
+                        getValue = '1';
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: CircleAvatar(
+                      backgroundColor: Const.hexToColor(Const.editTextColor),
+                      child: const Icon(
+                        Icons.remove,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  getValue,
+                  style: Const.headerText,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    setState(() {
+                      if (value < 3) {
+                        value++;
+                        getValue = value.toString();
+                        int fGetValue = int.parse(getValue);
+
+                        int finalValueInt =
+                            fGetValue * int.parse(widget.saladPrices);
+                        finalValue = (finalValueInt.toString());
+                      } else {
+                        getValue = '3';
+                      }
+                    });
+                  },
+                  child: SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: CircleAvatar(
+                      backgroundColor: Const.hexToColor(Const.addbtnColor),
+                      child: Icon(
+                        Icons.add,
+                        color: Const.hexToColor(Const.appColor),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+          ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          getValue,
-          style: Const.headerText,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            setState(() {
-              value++;
-              getValue = value.toString();
-            });
-          },
-          child: SizedBox(
-            width: 35,
-            height: 35,
-            child: CircleAvatar(
-              backgroundColor: Const.hexToColor(Const.addbtnColor),
+        Row(
+          children: [
+            SizedBox(
+              width: 35,
+              height: 35,
               child: Icon(
-                Icons.add,
+                Icons.currency_rupee,
+                size: 20,
                 color: Const.hexToColor(Const.appColor),
               ),
             ),
-          ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              finalValue,
+              style: Const.headerText,
+            ),
+          ],
         ),
       ],
     );
