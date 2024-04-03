@@ -63,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> {
           child: Text(
             Const.deliverInfo,
             textAlign: TextAlign.center,
-            style: Const.sub_headerText,
+            style: Const.subheaderText,
           ),
         ),
         const SizedBox(

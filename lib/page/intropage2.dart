@@ -13,7 +13,7 @@ class _IntroScreen2State extends State<IntroScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    final ScreenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Column(
@@ -35,7 +35,7 @@ class _IntroScreen2State extends State<IntroScreen2> {
           ),
           Expanded(
             flex: 1,
-            child: SingleChildScrollView(child: getIntro(ScreenSize)),
+            child: SingleChildScrollView(child: getIntro(screenSize)),
           )
         ],
       ),
@@ -78,6 +78,12 @@ class _IntroScreen2State extends State<IntroScreen2> {
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                   controller: _textEditingController,
+                  onChanged: (value) {
+                    if (value.length > 10) {
+                      _textEditingController.text = '';
+                    }
+                  },
+                  textCapitalization: TextCapitalization.characters,
                 ),
               ),
             ),
@@ -113,7 +119,8 @@ class _IntroScreen2State extends State<IntroScreen2> {
     if (getText.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      Navigator.pushNamed(context, '/homescreen');
+      Navigator.pushNamed(context, '/homescreen',
+          arguments: getText.toString());
     }
   }
 }

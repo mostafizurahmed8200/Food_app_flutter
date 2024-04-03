@@ -5,6 +5,7 @@ class AddSaladDetails extends StatelessWidget {
   final String saladImage;
   final String saladName;
   final String saladPrice;
+
   const AddSaladDetails(
       {super.key,
       required this.saladImage,
@@ -88,6 +89,12 @@ class AddSaladDetails extends StatelessWidget {
                         const _RowAddingCard(),
                         _RowMoneyAdd(saladPrice: saladPrice),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Divider(
+                      height: 5,
                     )
                   ],
                 ),
@@ -102,7 +109,8 @@ class AddSaladDetails extends StatelessWidget {
 
 class _RowMoneyAdd extends StatelessWidget {
   final String saladPrice;
-  const _RowMoneyAdd({super.key, required this.saladPrice});
+
+  const _RowMoneyAdd({required this.saladPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -129,44 +137,73 @@ class _RowMoneyAdd extends StatelessWidget {
   }
 }
 
-class _RowAddingCard extends StatelessWidget {
-  const _RowAddingCard({
-    super.key,
-  });
+class _RowAddingCard extends StatefulWidget {
+  const _RowAddingCard();
+
+  @override
+  State<_RowAddingCard> createState() => _RowAddingCardState();
+}
+
+class _RowAddingCardState extends State<_RowAddingCard> {
+  int value = 1;
+  String getValue = '1';
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(
-          width: 35,
-          height: 35,
-          child: CircleAvatar(
-            backgroundColor: Const.hexToColor(Const.editTextColor),
-            child: const Icon(
-              Icons.remove,
-              color: Colors.black,
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            setState(() {
+              if (value > 1) {
+                value--;
+
+                getValue = value.toString();
+              } else {
+                getValue = '1';
+              }
+            });
+          },
+          child: SizedBox(
+            width: 35,
+            height: 35,
+            child: CircleAvatar(
+              backgroundColor: Const.hexToColor(Const.editTextColor),
+              child: const Icon(
+                Icons.remove,
+                color: Colors.black,
+              ),
             ),
           ),
         ),
         const SizedBox(
           width: 10,
         ),
-        const Text(
-          "1",
+        Text(
+          getValue,
           style: Const.headerText,
         ),
         const SizedBox(
           width: 10,
         ),
-        SizedBox(
-          width: 35,
-          height: 35,
-          child: CircleAvatar(
-            backgroundColor: Const.hexToColor(Const.addbtnColor),
-            child: Icon(
-              Icons.add,
-              color: Const.hexToColor(Const.appColor),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            setState(() {
+              value++;
+              getValue = value.toString();
+            });
+          },
+          child: SizedBox(
+            width: 35,
+            height: 35,
+            child: CircleAvatar(
+              backgroundColor: Const.hexToColor(Const.addbtnColor),
+              child: Icon(
+                Icons.add,
+                color: Const.hexToColor(Const.appColor),
+              ),
             ),
           ),
         ),

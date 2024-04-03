@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController = TextEditingController();
   late TabController _tabController;
+  String? nameOfBuyer;
 
   @override
   void initState() {
@@ -29,6 +30,15 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null) {
+      nameOfBuyer = args.toString();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +49,16 @@ class _HomeScreenState extends State<HomeScreen>
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Image.asset(Const.cart),
+            child: GestureDetector(
+              child: Image.asset(Const.cart),
+              onTap: () => Navigator.pushNamed(context, "/cartitempage"),
+              // onTap: () => Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const CartItemPage(),
+              //   ),
+              // ),
+            ),
           )
         ],
       ),
@@ -49,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Helow AHMED, What fruit salad \ncombo do you want today?",
+              Text(
+                "Helow $nameOfBuyer, What fruit salad \ncombo do you want today?",
                 style: Const.headerText,
               ),
               const SizedBox(
@@ -75,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: Const.searchHint,
-                                  hintStyle: Const.sub_headerText,
+                                  hintStyle: Const.subheaderText,
                                   prefixIcon:
                                       Icon(Icons.search, color: Colors.grey)),
                               controller: _textEditingController,
@@ -97,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
                 style: Const.h1HeaderText,
               ),
               Expanded(flex: 1, child: _buildAllProduct()),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               SizedBox(
                 height: 50,
                 child: TabBar(
@@ -121,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: TabBarView(
                   controller: _tabController,
                   children: [
@@ -136,20 +155,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-}
-
-Widget _buildCustomTab(String title) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-    child: Text(
-      title,
-      style: TextStyle(
-        fontSize: 20,
-        color: Const.hexToColor(Const.appColor),
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
 }
 
 _buildAllProduct() => GridView.builder(

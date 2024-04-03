@@ -65,7 +65,7 @@ class Const {
   static const TextStyle headerText = TextStyle(
       fontSize: 20, fontFamily: "jost", fontWeight: FontWeight.normal);
 
-  static const TextStyle sub_headerText = TextStyle(
+  static const TextStyle subheaderText = TextStyle(
     fontSize: 15,
     color: Colors.grey,
     fontFamily: "jost",
