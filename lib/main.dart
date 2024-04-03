@@ -1,3 +1,4 @@
+import 'package:e_commerce/page/add_basket_page.dart';
 import 'package:e_commerce/page/cart_page.dart';
 import 'package:e_commerce/page/intropage2.dart';
 import 'package:e_commerce/page/splash_screen.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/intro2': (context) => const IntroScreen2(),
         '/homescreen': (context) => const HomeScreen(),
         '/cartitempage': (context) => const CartItemPage(),
+        '/basketPage': (context) => const AddBasKetItems(),
       },
     );
   }

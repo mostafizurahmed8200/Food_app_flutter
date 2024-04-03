@@ -2,7 +2,7 @@ import 'package:e_commerce/assets/const.dart';
 import 'package:e_commerce/page/add_salad_details.dart';
 import 'package:flutter/material.dart';
 
-import '../model/infomodel.dart';
+import '../model/salad_model.dart';
 
 class CardWidget extends StatefulWidget {
   final SaladModel infoModel; // Mark infoModel as final

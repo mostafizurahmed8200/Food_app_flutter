@@ -21,27 +21,27 @@ class MySaladModel {
     SaladModel(
         saladImage: Const.salad2,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '4000'),
     SaladModel(
         saladImage: Const.salad3,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '500'),
     SaladModel(
         saladImage: Const.salad4,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '3000'),
     SaladModel(
         saladImage: Const.salad5,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '200'),
     SaladModel(
         saladImage: Const.salad6,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '100'),
     SaladModel(
         saladImage: Const.salad7,
         saladName: "Berry-Mango Combo",
-        saladPrice: '2000'),
+        saladPrice: '900'),
     SaladModel(
         saladImage: Const.salad8,
         saladName: "Berry-Mango Combo",

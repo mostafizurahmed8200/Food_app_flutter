@@ -2,7 +2,7 @@ import 'package:e_commerce/assets/const.dart';
 import 'package:e_commerce/ui_widget/card_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../model/infomodel.dart';
+import '../model/salad_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

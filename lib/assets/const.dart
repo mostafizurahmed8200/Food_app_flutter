@@ -40,6 +40,7 @@ class Const {
   static const String appColor = '#FFA451';
   static const String addbtnColor = '#FFF2E7';
   static const String editTextColor = '#F3F1F1';
+  static const String transparentButtonColor = '#FFF7F0';
 
   //String Portion
 
@@ -50,6 +51,7 @@ class Const {
   static const String firstName = "What is your first name ?";
   static const String hintText = 'A H M E D';
   static const String startOrder = 'Start Ordering';
+  static const String addToBasket = 'Add to basket';
 
   static const String recommend = 'Recommended Combo';
   static const String searchHint = 'Search for fruit salad combo';
@@ -60,10 +62,24 @@ class Const {
   static const String newComboTabs = 'New Combo';
   static const String topTabs = 'Top';
 
+  //Add Details
+  static const String onePack = 'One Pack Contains';
+  static const String myBasket = 'My Basket';
+  static const String onePackDetails =
+      'Red Quinoa, Lime, Honey, Blueberries, Strawberries, Mango, Fresh mint.';
+  static const String onePackDetails2 =
+      'If you are looking for a new fruit salad to eat today, quinoa is the perfect brunch for you. make';
+
   //Text Style
 
   static const TextStyle headerText = TextStyle(
       fontSize: 20, fontFamily: "jost", fontWeight: FontWeight.normal);
+
+  static const TextStyle bodyText = TextStyle(
+      fontSize: 18,
+      fontFamily: "jost",
+      color: Colors.black,
+      fontWeight: FontWeight.normal);
 
   static const TextStyle subheaderText = TextStyle(
     fontSize: 15,
@@ -89,11 +105,17 @@ class Const {
     fontFamily: "jost",
   );
 
+  static const TextStyle h11HeaderTextWhite = TextStyle(
+    fontSize: 29,
+    color: Colors.white,
+    fontFamily: "jost",
+  );
+
   static Container mContainer = Container(
     width: 100,
     height: 40,
     decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        color: Colors.white, borderRadius: BorderRadius.circular(12)),
     child: const Row(
       children: [
         Padding(
