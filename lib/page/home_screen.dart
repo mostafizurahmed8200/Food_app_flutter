@@ -1,8 +1,8 @@
-import 'package:e_commerce/assets/const.dart';
-import 'package:e_commerce/ui_widget/card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:food_apps/assets/const.dart';
 
 import '../model/salad_model.dart';
+import '../ui_widget/card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

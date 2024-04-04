@@ -1,17 +1,35 @@
-import 'package:e_commerce/assets/const.dart';
 import 'package:flutter/material.dart';
 
+import '../assets/const.dart';
 import '../db/db_helper.dart';
 import '../model/salad_basket_sql.dart';
 
-class AddBasKetItems extends StatefulWidget {
-  const AddBasKetItems({super.key});
+class AddBasketItems extends StatefulWidget {
+  const AddBasketItems({super.key});
 
   @override
-  State<AddBasKetItems> createState() => _AddBasKetItemsState();
+  State<AddBasketItems> createState() => _AddBasketItemsState();
 }
 
-class _AddBasKetItemsState extends State<AddBasKetItems> {
+class _AddBasketItemsState extends State<AddBasketItems> {
+  late Future<List<SaladBasketSqlModel>> _saladsFuture;
+  List<SaladBasketSqlModel> _salads = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _saladsFuture = DBHelper.getSaladItems();
+    _loadSalads(); // Call function to load salads initially
+  }
+
+  // Function to load salads from the database
+  void _loadSalads() async {
+    List<SaladBasketSqlModel> salads = await _saladsFuture;
+    setState(() {
+      _salads = salads;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +49,7 @@ class _AddBasKetItemsState extends State<AddBasKetItems> {
                       child: Const.mContainer,
                     ),
                   ),
-                  const SizedBox(
-                    width: 30,
-                  ),
+                  const SizedBox(width: 30),
                   const Text(
                     Const.myBasket,
                     style: Const.h11HeaderTextWhite,
@@ -44,32 +60,27 @@ class _AddBasKetItemsState extends State<AddBasKetItems> {
           ),
           Expanded(
             flex: 6,
-            child: FutureBuilder<List<SaladBasketSqlModel>>(
-              future: DBHelper.getSaladItems(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  final salads = snapshot.data!;
-
-                  return ListView.builder(
-                    itemCount: salads.length,
+            child: _salads.isEmpty
+                ? const EmptyView()
+                : ListView.builder(
+                    itemCount: _salads.length,
                     itemBuilder: (context, index) {
-                      final salad = salads[index];
-
+                      final salad = _salads[index];
                       return BasketItemWidget(
                         saladImage: salad.saladImage!,
                         saladName: salad.saladName!,
                         saladPack: salad.saladPack!,
                         saladPrice: salad.saladPrice!,
+                        id: salad.id!,
+                        onDelete: () {
+                          setState(() {
+                            // Remove the item from the list
+                            _salads.removeAt(index);
+                          });
+                        },
                       );
                     },
-                  );
-                }
-              },
-            ),
+                  ),
           ),
         ],
       ),
@@ -82,105 +93,127 @@ class BasketItemWidget extends StatelessWidget {
   final String saladName;
   final String saladPack;
   final String saladPrice;
+  final int id;
+  final VoidCallback onDelete;
 
-  const BasketItemWidget(
-      {super.key,
-      required this.saladImage,
-      required this.saladName,
-      required this.saladPack,
-      required this.saladPrice});
+  const BasketItemWidget({
+    super.key,
+    required this.saladImage,
+    required this.saladName,
+    required this.saladPack,
+    required this.saladPrice,
+    required this.id,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 10,
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Const.hexToColor(Const.transparentButton2Color),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ClipOval(
-                      child: Image.asset(
-                        saladImage,
-                        width: 30,
-                        height: 30,
-                      ),
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Const.hexToColor(Const.transparentButton2Color),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ClipOval(
+                    child: Image.asset(
+                      saladImage,
+                      width: 30,
+                      height: 30,
                     ),
                   ),
                 ),
               ),
+              const SizedBox(width: 16),
               Expanded(
-                flex: 2,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(saladName),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(saladPack)
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 35,
-                      height: 35,
-                      child: Icon(
-                        Icons.currency_rupee,
-                        size: 20,
-                        color: Const.hexToColor(Const.appColor),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
                     Text(
-                      saladPrice,
+                      saladName,
                       style: Const.headerText,
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "$saladPack Packs",
+                      style: Const.bodyText,
+                    ),
                   ],
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: const SizedBox(
-                    child: Icon(
-                      Icons.delete_rounded,
-                      size: 30,
-                      color: Colors.red,
-                    ),
+              // const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.currency_rupee,
+                    size: 20,
+                    color: Const.hexToColor(Const.appColor),
                   ),
+                  const SizedBox(width: 5),
+                  Text(
+                    saladPrice,
+                    style: Const.headerText,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: () async {
+                  await DBHelper.deleteSaladItem(id);
+                  onDelete();
+                },
+                child: const Icon(
+                  Icons.delete_rounded,
+                  size: 30,
+                  color: Colors.red,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Divider(
-            height: 4,
-          ),
+          const SizedBox(height: 10),
+          const Divider(height: 4),
         ],
       ),
+    );
+  }
+}
+
+class EmptyView extends StatelessWidget {
+  const EmptyView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Image.asset(
+            Const.fruit1,
+            width: 200,
+            height: 200,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          "Empty Basket",
+          style: Const.h11HeaderText,
+        )
+      ],
     );
   }
 }

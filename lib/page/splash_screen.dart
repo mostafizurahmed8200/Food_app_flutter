@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:e_commerce/assets/const.dart';
-import 'package:e_commerce/page/intropage1.dart';
 import 'package:flutter/material.dart';
+import 'package:food_apps/assets/const.dart';
+
+import 'intropage1.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

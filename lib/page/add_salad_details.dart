@@ -1,7 +1,7 @@
-import 'package:e_commerce/assets/const.dart';
-import 'package:e_commerce/db/db_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:food_apps/assets/const.dart';
 
+import '../db/db_helper.dart';
 import '../model/salad_basket_sql.dart';
 
 class AddSaladDetails extends StatelessWidget {
@@ -25,6 +25,17 @@ class AddSaladDetails extends StatelessWidget {
 
   void handlegetPackValueChanged(String price) {
     getPackValue = price;
+  }
+
+  bool isChangesPrice = false;
+  void handlePriceChanges(bool isChangesPrices) {
+    isChangesPrice = isChangesPrices;
+  }
+
+  //Value Changes ---
+  bool isChangesPack = false;
+  void handlePackChanges(bool isCgVal) {
+    isChangesPack = isCgVal;
   }
 
   @override
@@ -104,6 +115,8 @@ class AddSaladDetails extends StatelessWidget {
                       saladName,
                       onFinalPriceChanged: handleFinalPriceChanged,
                       getPackValue: handlegetPackValueChanged,
+                      isChangesPrice: handlePriceChanges,
+                      isChangeValue: handlePackChanges,
                     ),
                     const SizedBox(
                       height: 20,
@@ -175,9 +188,12 @@ class AddSaladDetails extends StatelessWidget {
                                   final salad = SaladBasketSqlModel(
                                     saladImage: saladImage,
                                     saladName: saladName,
-                                    saladPack: getPackValue,
+                                    saladPack:
+                                        !isChangesPack ? '1' : getPackValue,
                                     // You may want to change this
-                                    saladPrice: finalPrice,
+                                    saladPrice: !isChangesPrice
+                                        ? saladPrice
+                                        : finalPrice,
                                   );
 
                                   // Insert the salad into the database
@@ -218,14 +234,18 @@ class AddSaladDetails extends StatelessWidget {
 
 class _RowAddingCard extends StatefulWidget {
   final String saladPrices;
-
   final String saladImage;
   final String saladName;
   final Function(String) onFinalPriceChanged; // Define callback
   final Function(String) getPackValue; // Define callback
+  final Function(bool) isChangesPrice; // Define callback
+  final Function(bool) isChangeValue; // Define callback
 
   const _RowAddingCard(this.saladPrices, this.saladImage, this.saladName,
-      {required this.onFinalPriceChanged, required this.getPackValue});
+      {required this.onFinalPriceChanged,
+      required this.getPackValue,
+      required this.isChangesPrice,
+      required this.isChangeValue});
 
   @override
   State<_RowAddingCard> createState() => _RowAddingCardState();
@@ -235,6 +255,7 @@ class _RowAddingCardState extends State<_RowAddingCard> {
   int value = 1;
   String getPackValue = '1';
   late String finalPrice;
+  late bool isChangesPrice;
 
   String getFinalPrice() {
     return finalPrice;
@@ -264,6 +285,7 @@ class _RowAddingCardState extends State<_RowAddingCard> {
                       if (value > 1) {
                         value--;
                         getPackValue = value.toString();
+
                         updateFinalValue();
                       } else {
                         getPackValue = '1';
@@ -296,12 +318,12 @@ class _RowAddingCardState extends State<_RowAddingCard> {
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     setState(() {
-                      if (value < 3) {
+                      if (value < 5) {
                         value++;
                         getPackValue = value.toString();
                         updateFinalValue();
                       } else {
-                        getPackValue = '3';
+                        getPackValue = '5';
                       }
                     });
                   },
@@ -351,6 +373,18 @@ class _RowAddingCardState extends State<_RowAddingCard> {
     setState(() {
       finalPrice = finalValueInt.toString();
     });
+    if (getPackValue != '1') {
+      setState(() {
+        widget.isChangeValue(true);
+      });
+    }
+
+    if (widget.saladPrices.isNotEmpty) {
+      setState(() {
+        widget.isChangesPrice(true);
+      });
+    }
+
     // Pass the final price back to the callback function
     widget.onFinalPriceChanged(finalPrice);
     widget.getPackValue(getPackValue);

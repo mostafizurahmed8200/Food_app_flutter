@@ -1,5 +1,6 @@
-import 'package:e_commerce/assets/const.dart';
 import 'package:flutter/material.dart';
+
+import '../assets/const.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

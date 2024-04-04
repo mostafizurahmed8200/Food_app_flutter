@@ -1,4 +1,4 @@
-import 'package:e_commerce/model/salad_basket_sql.dart';
+import 'package:food_apps/model/salad_basket_sql.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -34,11 +34,22 @@ class DBHelper {
     final List<Map<String, dynamic>> maps = await db.query('SaladItemTbl');
     return List.generate(maps.length, (i) {
       return SaladBasketSqlModel(
+        id: maps[i]['id'],
         saladImage: maps[i]['saladImage'],
         saladName: maps[i]['saladName'],
         saladPack: maps[i]['saladPack'],
         saladPrice: maps[i]['saladPrice'],
       );
     });
+  }
+
+  //Delete Item from Table--
+  static Future<void> deleteSaladItem(int id) async {
+    final Database db = await database();
+    await db.delete(
+      'SaladItemTbl',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

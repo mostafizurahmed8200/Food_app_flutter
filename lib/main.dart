@@ -1,8 +1,7 @@
-import 'package:e_commerce/page/add_basket_page.dart';
-import 'package:e_commerce/page/cart_page.dart';
-import 'package:e_commerce/page/intropage2.dart';
-import 'package:e_commerce/page/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:food_apps/page/add_basket_page.dart';
+import 'package:food_apps/page/intropage2.dart';
+import 'package:food_apps/page/splash_screen.dart';
 
 import 'assets/const.dart';
 import 'page/home_screen.dart';
@@ -34,8 +33,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/intro2': (context) => const IntroScreen2(),
         '/homescreen': (context) => const HomeScreen(),
-        '/cartitempage': (context) => const CartItemPage(),
-        '/basketPage': (context) => const AddBasKetItems(),
+        '/cartitempage': (context) => const AddBasketItems(),
+        '/basketPage': (context) => const AddBasketItems(),
       },
     );
   }
