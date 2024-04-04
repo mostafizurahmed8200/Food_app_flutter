@@ -9,7 +9,7 @@ class DBHelper {
       join(await getDatabasesPath(), 'SaladDB.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE SaladItem(saladImage TEXT, saladName TEXT, saladPack TEXT, saladPrice TEXT)",
+          "CREATE TABLE SaladItemTbl(id INTEGER PRIMARY KEY AUTOINCREMENT , saladImage TEXT, saladName TEXT, saladPack TEXT, saladPrice TEXT)",
         );
       },
       version: 1,
@@ -22,9 +22,23 @@ class DBHelper {
     final Database db = await database();
 
     await db.insert(
-      "SaladItem",
+      'SaladItemTbl',
       saladBasketSqlModel.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  //Retrive Database Value
+  static Future<List<SaladBasketSqlModel>> getSaladItems() async {
+    final Database db = await database();
+    final List<Map<String, dynamic>> maps = await db.query('SaladItemTbl');
+    return List.generate(maps.length, (i) {
+      return SaladBasketSqlModel(
+        saladImage: maps[i]['saladImage'],
+        saladName: maps[i]['saladName'],
+        saladPack: maps[i]['saladPack'],
+        saladPrice: maps[i]['saladPrice'],
+      );
+    });
   }
 }

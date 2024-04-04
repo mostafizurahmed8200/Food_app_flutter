@@ -41,6 +41,7 @@ class Const {
   static const String addbtnColor = '#FFF2E7';
   static const String editTextColor = '#F3F1F1';
   static const String transparentButtonColor = '#FFF7F0';
+  static const String transparentButton2Color = '#FEF0F0';
 
   //String Portion
 

@@ -52,12 +52,6 @@ class _HomeScreenState extends State<HomeScreen>
             child: GestureDetector(
               child: Image.asset(Const.cart),
               onTap: () => Navigator.pushNamed(context, "/cartitempage"),
-              // onTap: () => Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const CartItemPage(),
-              //   ),
-              // ),
             ),
           )
         ],
@@ -140,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: TabBarView(
                   controller: _tabController,
                   children: [

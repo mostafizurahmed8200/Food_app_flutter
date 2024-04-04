@@ -14,10 +14,17 @@ class AddSaladDetails extends StatelessWidget {
       required this.saladImage,
       required this.saladName,
       required this.saladPrice});
+
   String finalPrice = ''; // Define final price variable
 
   void handleFinalPriceChanged(String price) {
     finalPrice = price;
+  }
+
+  String getPackValue = ''; // Define final price variable
+
+  void handlegetPackValueChanged(String price) {
+    getPackValue = price;
   }
 
   @override
@@ -96,6 +103,7 @@ class AddSaladDetails extends StatelessWidget {
                       saladImage,
                       saladName,
                       onFinalPriceChanged: handleFinalPriceChanged,
+                      getPackValue: handlegetPackValueChanged,
                     ),
                     const SizedBox(
                       height: 20,
@@ -167,8 +175,8 @@ class AddSaladDetails extends StatelessWidget {
                                   final salad = SaladBasketSqlModel(
                                     saladImage: saladImage,
                                     saladName: saladName,
-                                    saladPack:
-                                        'Regular', // You may want to change this
+                                    saladPack: getPackValue,
+                                    // You may want to change this
                                     saladPrice: finalPrice,
                                   );
 
@@ -214,9 +222,10 @@ class _RowAddingCard extends StatefulWidget {
   final String saladImage;
   final String saladName;
   final Function(String) onFinalPriceChanged; // Define callback
+  final Function(String) getPackValue; // Define callback
 
   const _RowAddingCard(this.saladPrices, this.saladImage, this.saladName,
-      {required this.onFinalPriceChanged});
+      {required this.onFinalPriceChanged, required this.getPackValue});
 
   @override
   State<_RowAddingCard> createState() => _RowAddingCardState();
@@ -224,7 +233,7 @@ class _RowAddingCard extends StatefulWidget {
 
 class _RowAddingCardState extends State<_RowAddingCard> {
   int value = 1;
-  String getValue = '1';
+  String getPackValue = '1';
   late String finalPrice;
 
   String getFinalPrice() {
@@ -254,10 +263,10 @@ class _RowAddingCardState extends State<_RowAddingCard> {
                     setState(() {
                       if (value > 1) {
                         value--;
-                        getValue = value.toString();
+                        getPackValue = value.toString();
                         updateFinalValue();
                       } else {
-                        getValue = '1';
+                        getPackValue = '1';
                       }
                     });
                   },
@@ -277,7 +286,7 @@ class _RowAddingCardState extends State<_RowAddingCard> {
                   width: 10,
                 ),
                 Text(
-                  getValue,
+                  getPackValue,
                   style: Const.headerText,
                 ),
                 const SizedBox(
@@ -289,10 +298,10 @@ class _RowAddingCardState extends State<_RowAddingCard> {
                     setState(() {
                       if (value < 3) {
                         value++;
-                        getValue = value.toString();
+                        getPackValue = value.toString();
                         updateFinalValue();
                       } else {
-                        getValue = '3';
+                        getPackValue = '3';
                       }
                     });
                   },
@@ -337,12 +346,13 @@ class _RowAddingCardState extends State<_RowAddingCard> {
   } // Update finalValue based on value and saladPrices
 
   void updateFinalValue() {
-    int fGetValue = int.parse(getValue);
+    int fGetValue = int.parse(getPackValue);
     int finalValueInt = fGetValue * int.parse(widget.saladPrices);
     setState(() {
       finalPrice = finalValueInt.toString();
     });
     // Pass the final price back to the callback function
     widget.onFinalPriceChanged(finalPrice);
+    widget.getPackValue(getPackValue);
   }
 }
