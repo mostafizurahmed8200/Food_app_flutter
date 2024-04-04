@@ -53,6 +53,7 @@ class Const {
   static const String hintText = 'A H M E D';
   static const String startOrder = 'Start Ordering';
   static const String addToBasket = 'Add to basket';
+  static const String checkOutOrder = 'Checkout Order';
 
   static const String recommend = 'Recommended Combo';
   static const String searchHint = 'Search for fruit salad combo';

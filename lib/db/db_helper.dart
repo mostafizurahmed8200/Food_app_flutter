@@ -52,4 +52,13 @@ class DBHelper {
       whereArgs: [id],
     );
   }
+
+  //get total price value
+  static Future<int> getTotalPriceValue() async {
+    final Database db = await database();
+    final List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT SUM(saladPrice) AS total FROM SaladItemTbl');
+    int total = result[0]['total'];
+    return total;
+  }
 }

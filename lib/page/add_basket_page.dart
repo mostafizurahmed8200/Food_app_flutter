@@ -15,18 +15,36 @@ class _AddBasketItemsState extends State<AddBasketItems> {
   late Future<List<SaladBasketSqlModel>> _saladsFuture;
   List<SaladBasketSqlModel> _salads = [];
 
+  late String _totalPriceValue;
+
   @override
   void initState() {
     super.initState();
-    _saladsFuture = DBHelper.getSaladItems();
-    _loadSalads(); // Call function to load salads initially
+    Future.delayed(Duration.zero, () async {
+      _saladsFuture = DBHelper.getSaladItems();
+      await _loadData();
+    });
   }
 
   // Function to load salads from the database
-  void _loadSalads() async {
+  Future<void> _loadSalads() async {
     List<SaladBasketSqlModel> salads = await _saladsFuture;
     setState(() {
       _salads = salads;
+    });
+  }
+
+  // Function to load data from the database
+  Future<void> _loadData() async {
+    await _loadSalads();
+    await _loadTotalPrice();
+  }
+
+// Function to load total price value from the database
+  Future<void> _loadTotalPrice() async {
+    int totalPrice = await DBHelper.getTotalPriceValue();
+    setState(() {
+      _totalPriceValue = totalPrice.toString();
     });
   }
 
@@ -82,6 +100,57 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                     },
                   ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+            child: Expanded(
+              flex: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Total Price",
+                          style: Const.h11HeaderText,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.currency_rupee,
+                              size: 20,
+                              color: Colors.black,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              _totalPriceValue,
+                              style: Const.headerText,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                        height: 60,
+                        width: 200,
+                        decoration: BoxDecoration(
+                            color: Const.hexToColor(Const.appColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Center(
+                          child: Text(
+                            Const.checkOutOrder,
+                            style: Const.buttonText,
+                          ),
+                        ))
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
