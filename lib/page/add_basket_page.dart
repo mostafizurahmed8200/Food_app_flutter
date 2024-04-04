@@ -43,7 +43,7 @@ class _AddBasketItemsState extends State<AddBasketItems> {
 // Function to load total price value from the database
   Future<void> _loadTotalPrice() async {
     int totalPrice = await DBHelper.getTotalPriceValue();
-    print("Total Price --> $totalPrice");
+
     setState(() {
       _totalPriceValue = totalPrice.toString();
     });
@@ -59,7 +59,7 @@ class _AddBasketItemsState extends State<AddBasketItems> {
             child: Container(
               color: Const.hexToColor(Const.appColor),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
@@ -68,11 +68,24 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                       child: Const.mContainer,
                     ),
                   ),
-                  const SizedBox(width: 30),
                   const Text(
                     Const.myBasket,
                     style: Const.h11HeaderTextWhite,
-                  )
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, '/homescreen'),
+                    child: const Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.home_sharp,
+                          size: 40,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -144,6 +157,7 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                     GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
+                          isScrollControlled: true,
                           context: context,
                           backgroundColor: Colors.transparent,
                           shape: const RoundedRectangleBorder(
@@ -153,9 +167,19 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                             ),
                           ),
                           builder: (BuildContext context) {
-                            return BottomSheetCheckOutOrder(); // Display the bottom sheet
+                            return const BottomSheetCheckOutOrder(); // Display the bottom sheet
                           },
                         );
+                        /*  showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Material(
+                              // Ensure that the dialog's context is within a Material widget
+                              type: MaterialType.transparency,
+                              child: BottomSheetCheckOutOrder(),
+                            );
+                          },
+                        );*/
                       },
                       child: Container(
                           height: 60,
@@ -315,7 +339,7 @@ class EmptyView extends StatelessWidget {
 }
 
 class BottomSheetCheckOutOrder extends StatefulWidget {
-  const BottomSheetCheckOutOrder({Key? key});
+  const BottomSheetCheckOutOrder({super.key});
 
   @override
   State<BottomSheetCheckOutOrder> createState() =>
@@ -323,130 +347,134 @@ class BottomSheetCheckOutOrder extends StatefulWidget {
 }
 
 class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingControllerDelivery =
+      TextEditingController();
+  final TextEditingController _textEditingControllerPhoneNumber =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenHeight = MediaQuery.of(context).size.height;
     final halfScreenHeight = screenHeight / 2;
-
-    return Container(
-      color: Colors.transparent,
-      height: halfScreenHeight,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Center(child: Image.asset(Const.cancelbutton)),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(24),
-                  topLeft: Radius.circular(24),
-                ),
-              ),
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return Padding(
+      padding: mediaQueryData.viewInsets,
+      child: Container(
+        color: Colors.transparent,
+        height: halfScreenHeight,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
               child: Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        Const.deliveryAddress,
-                        style: Const.h1HeaderText,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Const.hexToColor(Const.editTextColor),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: SizedBox(
-                          width: screenSize.width * .8,
-                          height: 60,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Center(
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: Const.deliveryAddresshintText,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                ),
-                                controller: _textEditingController,
-                                onChanged: (value) {
-                                  if (value.length > 10) {
-                                    _textEditingController.text = '';
-                                  }
-                                },
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        Const.numbertocall,
-                        style: Const.h1HeaderText,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Const.hexToColor(Const.editTextColor),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: SizedBox(
-                          width: screenSize.width * .8,
-                          height: 60,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Center(
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: Const.numbertocallhintText,
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                ),
-                                controller: _textEditingController,
-                                onChanged: (value) {
-                                  if (value.length > 10) {
-                                    _textEditingController.text = '';
-                                  }
-                                },
-                                textCapitalization:
-                                    TextCapitalization.characters,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Center(child: Image.asset(Const.cancelbutton)),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(24),
+                    topLeft: Radius.circular(24),
                   ),
                 ),
-              ), // Replace YourContentWidget with your actual content
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          Const.deliveryAddress,
+                          style: Const.h1HeaderText,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Const.hexToColor(Const.editTextColor),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: SizedBox(
+                            width: screenSize.width * .8,
+                            height: 60,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Center(
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: Const.deliveryAddresshintText,
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                  ),
+                                  controller: _textEditingControllerDelivery,
+                                  // onChanged: (value) {
+                                  //   if (value.length > 10) {
+                                  //     _textEditingController.text = '';
+                                  //   }
+                                  // },
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          Const.numbertocall,
+                          style: Const.h1HeaderText,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Const.hexToColor(Const.editTextColor),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: SizedBox(
+                            width: screenSize.width * .8,
+                            height: 60,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Center(
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: Const.numbertocallhintText,
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                  ),
+                                  controller: _textEditingControllerPhoneNumber,
+                                  // onChanged: (value) {
+                                  //
+                                  // },
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ), // Replace YourContentWidget with your actual content
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

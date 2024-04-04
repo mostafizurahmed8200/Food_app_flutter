@@ -15,63 +15,65 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Wrap(children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                    alignment: Alignment.topRight,
-                    child: Image.asset(Const.fav)),
-                Center(
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: ClipOval(
-                      child: Image.asset(
-                        fit: BoxFit.cover,
-                        widget.infoModel.saladImage,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AddSaladDetails(
+            saladImage: widget.infoModel.saladImage,
+            saladName: widget.infoModel.saladName,
+            saladPrice: widget.infoModel.saladPrice,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Wrap(children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: Image.asset(Const.fav)),
+                  Center(
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: ClipOval(
+                        child: Image.asset(
+                          fit: BoxFit.cover,
+                          widget.infoModel.saladImage,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(widget.infoModel.saladName),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.currency_rupee,
-                          size: 20,
-                          color: Const.hexToColor(Const.appColor),
-                        ),
-                        Text(widget.infoModel.saladPrice),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddSaladDetails(
-                                    saladImage: widget.infoModel.saladImage,
-                                    saladName: widget.infoModel.saladName,
-                                    saladPrice: widget.infoModel.saladPrice,
-                                  ))),
-                      child: SizedBox(
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(widget.infoModel.saladName),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.currency_rupee,
+                            size: 20,
+                            color: Const.hexToColor(Const.appColor),
+                          ),
+                          Text(widget.infoModel.saladPrice),
+                        ],
+                      ),
+                      SizedBox(
                         width: 25,
                         height: 25,
                         child: CircleAvatar(
@@ -81,15 +83,15 @@ class _CardWidgetState extends State<CardWidget> {
                             color: Const.hexToColor(Const.appColor),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

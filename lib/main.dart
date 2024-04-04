@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSeed(seedColor: Const.hexToColor(Const.appColor)),
           useMaterial3: false,
-          scaffoldBackgroundColor: Colors.grey[40],
+          // scaffoldBackgroundColor: Colors.grey[40],
           appBarTheme: const AppBarTheme(
             color: Colors.white,
             elevation: 0,

@@ -28,12 +28,14 @@ class AddSaladDetails extends StatelessWidget {
   }
 
   bool isChangesPrice = false;
+
   void handlePriceChanges(bool isChangesPrices) {
     isChangesPrice = isChangesPrices;
   }
 
   //Value Changes ---
   bool isChangesPack = false;
+
   void handlePackChanges(bool isCgVal) {
     isChangesPack = isCgVal;
   }
@@ -68,8 +70,8 @@ class AddSaladDetails extends StatelessWidget {
                       Expanded(
                         child: Center(
                           child: SizedBox(
-                            width: 200,
-                            height: 200,
+                            width: 300,
+                            height: 300,
                             child: ClipOval(
                               child: Image.asset(
                                 fit: BoxFit.cover,
@@ -86,7 +88,7 @@ class AddSaladDetails extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
