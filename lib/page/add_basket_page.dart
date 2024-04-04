@@ -15,7 +15,7 @@ class _AddBasketItemsState extends State<AddBasketItems> {
   late Future<List<SaladBasketSqlModel>> _saladsFuture;
   List<SaladBasketSqlModel> _salads = [];
 
-  late String _totalPriceValue;
+  late String _totalPriceValue = '';
 
   @override
   void initState() {
@@ -43,6 +43,7 @@ class _AddBasketItemsState extends State<AddBasketItems> {
 // Function to load total price value from the database
   Future<void> _loadTotalPrice() async {
     int totalPrice = await DBHelper.getTotalPriceValue();
+    print("Total Price --> $totalPrice");
     setState(() {
       _totalPriceValue = totalPrice.toString();
     });
@@ -96,6 +97,12 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                             _salads.removeAt(index);
                           });
                         },
+                        onPriceDelete: () {
+                          setState(() {
+                            // Remove the item from the list
+                            _loadTotalPrice();
+                          });
+                        },
                       );
                     },
                   ),
@@ -114,38 +121,55 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Total Price",
                           style: Const.h11HeaderText,
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.currency_rupee,
                               size: 20,
                               color: Colors.black,
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Text(
-                              _totalPriceValue,
+                              _salads.isEmpty ? '0' : _totalPriceValue,
                               style: Const.headerText,
                             ),
                           ],
                         ),
                       ],
                     ),
-                    Container(
-                        height: 60,
-                        width: 200,
-                        decoration: BoxDecoration(
-                            color: Const.hexToColor(Const.appColor),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Center(
-                          child: Text(
-                            Const.checkOutOrder,
-                            style: Const.buttonText,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          backgroundColor: Colors.transparent,
+                          shape: const RoundedRectangleBorder(
+                            // <-- SEE HERE
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(25.0),
+                            ),
                           ),
-                        ))
+                          builder: (BuildContext context) {
+                            return BottomSheetCheckOutOrder(); // Display the bottom sheet
+                          },
+                        );
+                      },
+                      child: Container(
+                          height: 60,
+                          width: 200,
+                          decoration: BoxDecoration(
+                              color: Const.hexToColor(Const.appColor),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Center(
+                            child: Text(
+                              Const.checkOutOrder,
+                              style: Const.buttonText,
+                            ),
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -164,6 +188,7 @@ class BasketItemWidget extends StatelessWidget {
   final String saladPrice;
   final int id;
   final VoidCallback onDelete;
+  final VoidCallback onPriceDelete;
 
   const BasketItemWidget({
     super.key,
@@ -173,6 +198,7 @@ class BasketItemWidget extends StatelessWidget {
     required this.saladPrice,
     required this.id,
     required this.onDelete,
+    required this.onPriceDelete,
   });
 
   @override
@@ -243,6 +269,7 @@ class BasketItemWidget extends StatelessWidget {
                 onTap: () async {
                   await DBHelper.deleteSaladItem(id);
                   onDelete();
+                  onPriceDelete();
                 },
                 child: const Icon(
                   Icons.delete_rounded,
@@ -283,6 +310,144 @@ class EmptyView extends StatelessWidget {
           style: Const.h11HeaderText,
         )
       ],
+    );
+  }
+}
+
+class BottomSheetCheckOutOrder extends StatefulWidget {
+  const BottomSheetCheckOutOrder({Key? key});
+
+  @override
+  State<BottomSheetCheckOutOrder> createState() =>
+      _BottomSheetCheckOutOrderState();
+}
+
+class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
+  final TextEditingController _textEditingController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final halfScreenHeight = screenHeight / 2;
+
+    return Container(
+      color: Colors.transparent,
+      height: halfScreenHeight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Center(child: Image.asset(Const.cancelbutton)),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(24),
+                  topLeft: Radius.circular(24),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        Const.deliveryAddress,
+                        style: Const.h1HeaderText,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Const.hexToColor(Const.editTextColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: SizedBox(
+                          width: screenSize.width * .8,
+                          height: 60,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Center(
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: Const.deliveryAddresshintText,
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                                controller: _textEditingController,
+                                onChanged: (value) {
+                                  if (value.length > 10) {
+                                    _textEditingController.text = '';
+                                  }
+                                },
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        Const.numbertocall,
+                        style: Const.h1HeaderText,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Const.hexToColor(Const.editTextColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: SizedBox(
+                          width: screenSize.width * .8,
+                          height: 60,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Center(
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: Const.numbertocallhintText,
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                ),
+                                controller: _textEditingController,
+                                onChanged: (value) {
+                                  if (value.length > 10) {
+                                    _textEditingController.text = '';
+                                  }
+                                },
+                                textCapitalization:
+                                    TextCapitalization.characters,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ), // Replace YourContentWidget with your actual content
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

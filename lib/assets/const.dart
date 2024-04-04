@@ -18,6 +18,7 @@ class Const {
 
   //Card Asset
   static const String fav = '${assets}fav.png';
+  static const String cancelbutton = '${assets}cancel.png';
 
   //Salad Asset-
   static const String salad1 = 'asset/img/salad/salad1.png';
@@ -50,13 +51,21 @@ class Const {
       'We deliver the best and freshest fruit salad in town. Order for a combo today!!!';
   static const String letsContinue = "Let's Continue";
   static const String firstName = "What is your first name ?";
-  static const String hintText = 'A H M E D';
+  static const String hintText = 'Enter Your Name';
   static const String startOrder = 'Start Ordering';
   static const String addToBasket = 'Add to basket';
   static const String checkOutOrder = 'Checkout Order';
 
   static const String recommend = 'Recommended Combo';
   static const String searchHint = 'Search for fruit salad combo';
+
+  static const String deliveryAddress = 'Delivery Address';
+  static const String deliveryAddresshintText = 'India, Hyd, TS';
+  static const String numbertocall = 'Number we can call you';
+  static const String numbertocallhintText = '+91 8247355635';
+
+  static const String payondelivery = 'Pay on delivery';
+  static const String paywithCard = 'Pay with card';
 
   //Tabs
   static const String hottestTabs = 'Hottest';
