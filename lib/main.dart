@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_apps/page/add_basket_page.dart';
+import 'package:food_apps/page/complete_order.dart';
 import 'package:food_apps/page/intropage2.dart';
 import 'package:food_apps/page/splash_screen.dart';
+import 'package:food_apps/page/track_order.dart';
 
 import 'assets/const.dart';
 import 'page/home_screen.dart';
@@ -31,10 +33,12 @@ class MyApp extends StatelessWidget {
       // home: const SplashScreen(),
       home: const SplashScreen(),
       routes: {
-        '/intro2': (context) => const IntroScreen2(),
         '/homescreen': (context) => const HomeScreen(),
+        '/intro2': (context) => const IntroScreen2(),
         '/cartitempage': (context) => const AddBasketItems(),
         '/basketPage': (context) => const AddBasketItems(),
+        '/completeorder': (context) => const CompleteOrderPage(),
+        '/trackOrder': (context) => const TrackOrderPage(),
       },
     );
   }

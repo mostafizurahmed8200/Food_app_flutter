@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../assets/const.dart';
+import '../ui_widget/button_widget.dart';
 
 class IntroScreen2 extends StatefulWidget {
   const IntroScreen2({super.key});
@@ -96,18 +97,11 @@ class _IntroScreen2State extends State<IntroScreen2> {
         GestureDetector(
           onTap: () => _inputValidation(context),
           child: Center(
-            child: Container(
-                height: 50,
-                width: screenSize.width * .8,
-                decoration: BoxDecoration(
-                    color: Const.hexToColor(Const.appColor),
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Center(
-                  child: Text(
-                    Const.startOrder,
-                    style: Const.buttonText,
-                  ),
-                )),
+            child: ButtonWidget(
+              height: 50,
+              width: screenSize.width * .8,
+              text: Const.startOrder,
+            ),
           ),
         )
       ],

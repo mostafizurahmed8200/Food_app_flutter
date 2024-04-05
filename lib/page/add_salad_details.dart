@@ -3,6 +3,7 @@ import 'package:food_apps/assets/const.dart';
 
 import '../db/db_helper.dart';
 import '../model/salad_basket_sql.dart';
+import '../ui_widget/button_widget.dart';
 
 class AddSaladDetails extends StatelessWidget {
   final String saladImage;
@@ -204,19 +205,11 @@ class AddSaladDetails extends StatelessWidget {
                                   // Navigate to the basket page
                                   Navigator.pushNamed(context, '/basketPage');
                                 },
-                                child: Container(
-                                    height: 60,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                        color: Const.hexToColor(Const.appColor),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: const Center(
-                                      child: Text(
-                                        Const.addToBasket,
-                                        style: Const.buttonText,
-                                      ),
-                                    )),
+                                child: const ButtonWidget(
+                                  height: 60,
+                                  width: 200,
+                                  text: Const.addToBasket,
+                                ),
                               ),
                             ],
                           )

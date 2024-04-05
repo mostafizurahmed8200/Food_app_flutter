@@ -38,13 +38,23 @@ class _HomeScreenState extends State<HomeScreen>
     }
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey =
+      GlobalKey<ScaffoldState>(); // Add GlobalKey
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey, // Assign GlobalKey to Scaffold
+      drawer: const Drawer(),
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Image.asset(Const.menu),
+          child: GestureDetector(
+            onTap: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            child: Image.asset(Const.menu),
+          ),
         ),
         actions: [
           Padding(
@@ -63,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Helow $nameOfBuyer, What fruit salad \ncombo do you want today?",
+                "Hello $nameOfBuyer, What fruit salad \ncombo do you want today?",
                 style: Const.headerText,
               ),
               const SizedBox(
@@ -151,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
+//Products
 _buildAllProduct() => GridView.builder(
     shrinkWrap: true,
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -166,6 +177,7 @@ _buildAllProduct() => GridView.builder(
     },
     scrollDirection: Axis.horizontal);
 
+// Tab Products
 _buildAllProductTabs() => GridView.builder(
     shrinkWrap: true,
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

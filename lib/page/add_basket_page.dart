@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../assets/const.dart';
 import '../db/db_helper.dart';
 import '../model/salad_basket_sql.dart';
+import '../ui_widget/button_widget.dart';
 
 class AddBasketItems extends StatefulWidget {
   const AddBasketItems({super.key});
@@ -170,29 +172,12 @@ class _AddBasketItemsState extends State<AddBasketItems> {
                             return const BottomSheetCheckOutOrder(); // Display the bottom sheet
                           },
                         );
-                        /*  showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Material(
-                              // Ensure that the dialog's context is within a Material widget
-                              type: MaterialType.transparency,
-                              child: BottomSheetCheckOutOrder(),
-                            );
-                          },
-                        );*/
                       },
-                      child: Container(
-                          height: 60,
-                          width: 200,
-                          decoration: BoxDecoration(
-                              color: Const.hexToColor(Const.appColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Center(
-                            child: Text(
-                              Const.checkOutOrder,
-                              style: Const.buttonText,
-                            ),
-                          )),
+                      child: const ButtonWidget(
+                        height: 60,
+                        width: 200,
+                        text: Const.checkOutOrder,
+                      ),
                     )
                   ],
                 ),
@@ -351,6 +336,7 @@ class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
       TextEditingController();
   final TextEditingController _textEditingControllerPhoneNumber =
       TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -363,7 +349,8 @@ class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
         color: Colors.transparent,
         height: halfScreenHeight,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
@@ -386,89 +373,118 @@ class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          Const.deliveryAddress,
-                          style: Const.h1HeaderText,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Const.hexToColor(Const.editTextColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: SizedBox(
-                            width: screenSize.width * .8,
-                            height: 60,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Center(
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: Const.deliveryAddresshintText,
-                                    hintStyle: TextStyle(color: Colors.grey),
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            Const.deliveryAddress,
+                            style: Const.h1HeaderText,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _mDeliveryAddressEdiText(
+                              screenSize, _textEditingControllerDelivery),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            Const.numbertocall,
+                            style: Const.h1HeaderText,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          _mDeliveryPhoneNumberEdiText(
+                              screenSize, _textEditingControllerPhoneNumber),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              //Pay on delivery
+                              GestureDetector(
+                                onTap: () {
+                                  // Add your onTap logic here
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: screenSize.width *
+                                      0.3, // Adjust width as needed
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Const.hexToColor(Const.appColor),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  controller: _textEditingControllerDelivery,
-                                  // onChanged: (value) {
-                                  //   if (value.length > 10) {
-                                  //     _textEditingController.text = '';
-                                  //   }
-                                  // },
-                                  textCapitalization:
-                                      TextCapitalization.characters,
+                                  child: Center(
+                                    child: Text(
+                                      Const.payondelivery,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Const.hexToColor(Const.appColor),
+                                        fontFamily: "jost",
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          Const.numbertocall,
-                          style: Const.h1HeaderText,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Const.hexToColor(Const.editTextColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: SizedBox(
-                            width: screenSize.width * .8,
-                            height: 60,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Center(
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: Const.numbertocallhintText,
-                                    hintStyle: TextStyle(color: Colors.grey),
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    shape: const RoundedRectangleBorder(
+                                      // <-- SEE HERE
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(25.0),
+                                      ),
+                                    ),
+                                    builder: (BuildContext context) {
+                                      return const CreditCardBottomSheetCheckOutOrder(); // Display the bottom sheet
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: screenSize.width *
+                                      0.3, // Adjust width as needed
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Const.hexToColor(Const.appColor),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  controller: _textEditingControllerPhoneNumber,
-                                  // onChanged: (value) {
-                                  //
-                                  // },
-                                  textCapitalization:
-                                      TextCapitalization.characters,
+                                  child: Center(
+                                    child: Text(
+                                      Const.paywithCard,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Const.hexToColor(Const.appColor),
+                                        fontFamily: "jost",
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
                   ),
                 ), // Replace YourContentWidget with your actual content
               ),
@@ -479,3 +495,411 @@ class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
     );
   }
 }
+
+//Credit Card Bottomnav
+class CreditCardBottomSheetCheckOutOrder extends StatefulWidget {
+  const CreditCardBottomSheetCheckOutOrder({super.key});
+
+  @override
+  State<CreditCardBottomSheetCheckOutOrder> createState() =>
+      _CreditCardBottomSheetCheckOutOrderState();
+}
+
+class _CreditCardBottomSheetCheckOutOrderState
+    extends State<CreditCardBottomSheetCheckOutOrder> {
+  final TextEditingController _textEditingControllerDelivery =
+      TextEditingController();
+  final TextEditingController _textEditingControllerPhoneNumber =
+      TextEditingController();
+
+  final TextEditingController _textEditingControllerCVV =
+      TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final halfScreenHeight = screenHeight / 2;
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return Padding(
+      padding: mediaQueryData.viewInsets,
+      child: Container(
+        color: Colors.transparent,
+        height: halfScreenHeight * 1.3,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Center(child: Image.asset(Const.cancelbutton)),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(24),
+                    topLeft: Radius.circular(24),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  Const.cardHolderName,
+                                  style: Const.h1HeaderText,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Const.hexToColor(Const.editTextColor),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: SizedBox(
+                                    width: screenSize.width * .8,
+                                    height: 60,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Center(
+                                        child: TextFormField(
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText:
+                                                Const.deliveryAddresshintText,
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          controller:
+                                              _textEditingControllerDelivery,
+                                          // onChanged: (value) {
+                                          //   if (value.length > 10) {
+                                          //     _textEditingController.text = '';
+                                          //   }
+                                          // },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Text(
+                                  Const.cardNumber,
+                                  style: Const.h1HeaderText,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Const.hexToColor(Const.editTextColor),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: SizedBox(
+                                    width: screenSize.width * .8,
+                                    height: 60,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: Center(
+                                        child: TextFormField(
+                                          maxLength: 10,
+
+                                          keyboardType: TextInputType.phone,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r'[0-9]'),
+                                            ),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                            // Allow only numbers
+                                          ],
+                                          decoration: const InputDecoration(
+                                            counterText: '',
+                                            border: InputBorder.none,
+                                            hintText:
+                                                Const.numbertocallhintText,
+                                            hintStyle:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          controller:
+                                              _textEditingControllerPhoneNumber,
+                                          // onChanged: (value) {
+                                          //
+                                          // },
+                                          textCapitalization:
+                                              TextCapitalization.characters,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    //
+                                    SizedBox(
+                                      width: screenSize.width * 0.3,
+                                      child: const Text(
+                                        Const.date,
+                                        style: Const.h1HeaderText,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: screenSize.width * 0.2,
+                                    ),
+                                    SizedBox(
+                                      width: screenSize.width * 0.3,
+                                      child: const Text(
+                                        Const.cvv,
+                                        style: Const.h1HeaderText,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+
+                                //Date and CVV Editext
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    //
+                                    GestureDetector(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Const.hexToColor(
+                                                Const.editTextColor),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: SizedBox(
+                                          width: screenSize.width * 0.3,
+                                          height: 60,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0),
+                                            child: Center(
+                                              child: TextFormField(
+                                                enabled: false,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  counterText: '',
+                                                  border: InputBorder.none,
+                                                  hintText: Const.dateHintText,
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                                controller:
+                                                    _textEditingControllerPhoneNumber,
+                                                // onChanged: (value) {
+                                                //
+                                                // },
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .characters,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: screenSize.width * 0.2,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Const.hexToColor(
+                                              Const.editTextColor),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: SizedBox(
+                                        width: screenSize.width * 0.3,
+                                        height: 60,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Center(
+                                            child: TextFormField(
+                                              maxLength: 3,
+                                              keyboardType: TextInputType.phone,
+                                              decoration: const InputDecoration(
+                                                counterText: '',
+                                                border: InputBorder.none,
+                                                hintText: Const.cvvHintText,
+                                                hintStyle: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              controller:
+                                                  _textEditingControllerCVV,
+                                              // onChanged: (value) {
+                                              //
+                                              // },
+                                              textCapitalization:
+                                                  TextCapitalization.characters,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            color: Const.hexToColor(Const.appColor),
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/completeorder');
+                            },
+                            child: Center(
+                              child: _mCompleteOrder(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ), // Replace YourContentWidget with your actual content
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//Complete  Order Button
+_mCompleteOrder() => Container(
+      height: 60,
+      width: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text(
+          Const.completeOder,
+          style: TextStyle(
+            fontSize: 15,
+            color: Const.hexToColor(Const.appColor),
+            fontFamily: "jost",
+          ),
+        ),
+      ),
+    );
+
+////Delivery EditText
+_mDeliveryAddressEdiText(
+        Size screenSize, TextEditingController textEditingControllerDelivery) =>
+    Container(
+      decoration: BoxDecoration(
+          color: Const.hexToColor(Const.editTextColor),
+          borderRadius: BorderRadius.circular(10)),
+      child: SizedBox(
+        width: screenSize.width * .8,
+        height: 60,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Center(
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: Const.deliveryAddresshintText,
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+              controller: textEditingControllerDelivery,
+              // onChanged: (value) {
+              //   if (value.length > 10) {
+              //     _textEditingController.text = '';
+              //   }
+              // },
+            ),
+          ),
+        ),
+      ),
+    );
+
+//Phone Number EditText
+_mDeliveryPhoneNumberEdiText(Size screenSize,
+        TextEditingController textEditingControllerPhoneNumber) =>
+    Container(
+      decoration: BoxDecoration(
+          color: Const.hexToColor(Const.editTextColor),
+          borderRadius: BorderRadius.circular(10)),
+      child: SizedBox(
+        width: screenSize.width * .8,
+        height: 60,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Center(
+            child: TextFormField(
+              maxLength: 10,
+
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'[0-9]'),
+                ),
+                FilteringTextInputFormatter.digitsOnly // Allow only numbers
+              ],
+              decoration: const InputDecoration(
+                counterText: '',
+                border: InputBorder.none,
+                hintText: Const.numbertocallhintText,
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+              controller: textEditingControllerPhoneNumber,
+              // onChanged: (value) {
+              //
+              // },
+              textCapitalization: TextCapitalization.characters,
+            ),
+          ),
+        ),
+      ),
+    );

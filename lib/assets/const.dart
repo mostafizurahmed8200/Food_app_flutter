@@ -19,6 +19,7 @@ class Const {
   //Card Asset
   static const String fav = '${assets}fav.png';
   static const String cancelbutton = '${assets}cancel.png';
+  static const String completeOrderImg = '${assets}complete_order.png';
 
   //Salad Asset-
   static const String salad1 = 'asset/img/salad/salad1.png';
@@ -33,7 +34,6 @@ class Const {
   static const String salad10 = 'asset/img/salad/salad10.jpeg';
 
 //Colors--
-
   static Color hexToColor(String code) {
     return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
@@ -45,7 +45,6 @@ class Const {
   static const String transparentButton2Color = '#FEF0F0';
 
   //String Portion
-
   static const String saladCombo = 'Get The Freshest Fruit Salad Combo';
   static const String deliverInfo =
       'We deliver the best and freshest fruit salad in town. Order for a combo today!!!';
@@ -55,37 +54,41 @@ class Const {
   static const String startOrder = 'Start Ordering';
   static const String addToBasket = 'Add to basket';
   static const String checkOutOrder = 'Checkout Order';
-
+  static const String completeOder = 'Complete Order';
+  static const String congratulation = 'Congratulation !!';
+  static const String trackOrder = 'Track order';
+  static const String continueShopping = 'Continue shopping';
+  static const String oderDone =
+      'Your order have been taken and is being attended to';
   static const String recommend = 'Recommended Combo';
   static const String searchHint = 'Search for fruit salad combo';
-
   static const String deliveryAddress = 'Delivery Address';
   static const String deliveryAddresshintText = 'India, Hyd, TS';
   static const String numbertocall = 'Number we can call you';
   static const String numbertocallhintText = '+91 8247355635';
-
   static const String payondelivery = 'Pay on delivery';
   static const String paywithCard = 'Pay with card';
-
-  //Tabs
+  static const String cardHolderName = 'Card Holders Name';
+  static const String cardNumber = 'Card Number';
+  static const String date = 'Date';
+  static const String dateHintText = '06/23';
+  static const String cvv = 'CVV';
+  static const String cvvHintText = '623';
   static const String hottestTabs = 'Hottest';
   static const String popularTabs = 'Popular';
   static const String newComboTabs = 'New Combo';
   static const String topTabs = 'Top';
-
-  //Add Details
   static const String onePack = 'One Pack Contains';
   static const String myBasket = 'My Basket';
+  static const String deliveryStatus = 'Delivery Status';
   static const String onePackDetails =
       'Red Quinoa, Lime, Honey, Blueberries, Strawberries, Mango, Fresh mint.';
   static const String onePackDetails2 =
       'If you are looking for a new fruit salad to eat today, quinoa is the perfect brunch for you. make';
 
   //Text Style
-
   static const TextStyle headerText = TextStyle(
       fontSize: 20, fontFamily: "jost", fontWeight: FontWeight.normal);
-
   static const TextStyle bodyText = TextStyle(
       fontSize: 18,
       fontFamily: "jost",
