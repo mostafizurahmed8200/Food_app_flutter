@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:food_apps/assets/const.dart';
 
@@ -16,13 +14,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-      const Duration(seconds: 5),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const IntroScreen(),
-        ),
+    // Timer(
+    //   const Duration(seconds: 5),
+    //   () => Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => const IntroScreen(),
+    //     ),
+    //   ),
+    // );
+
+    _navigateToIntro();
+  }
+
+  void _navigateToIntro() async {
+    await Future.delayed(const Duration(seconds: 1)); // R
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const IntroScreen(),
       ),
     );
   }

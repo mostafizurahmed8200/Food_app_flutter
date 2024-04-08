@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../assets/const.dart';
 import '../db/db_helper.dart';
@@ -413,7 +414,15 @@ class _BottomSheetCheckOutOrderState extends State<BottomSheetCheckOutOrder> {
                               //Pay on delivery
                               GestureDetector(
                                 onTap: () {
-                                  // Add your onTap logic here
+                                  if (_isTextInputNew(
+                                      context,
+                                      _textEditingControllerDelivery,
+                                      _textEditingControllerPhoneNumber,
+                                      'Please Enter Delivery Address',
+                                      'Please Enter Mobile Number')) {
+                                    Navigator.pushNamed(
+                                        context, '/completeorder');
+                                  }
                                 },
                                 child: Container(
                                   height: 50,
@@ -507,13 +516,34 @@ class CreditCardBottomSheetCheckOutOrder extends StatefulWidget {
 
 class _CreditCardBottomSheetCheckOutOrderState
     extends State<CreditCardBottomSheetCheckOutOrder> {
-  final TextEditingController _textEditingControllerDelivery =
+  final TextEditingController _textContolerCardHolderName =
       TextEditingController();
-  final TextEditingController _textEditingControllerPhoneNumber =
-      TextEditingController();
+  final TextEditingController _textContolerCardNumber = TextEditingController();
+  final TextEditingController _textContolerDate = TextEditingController();
 
   final TextEditingController _textEditingControllerCVV =
       TextEditingController();
+
+  late DateTime _selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        // Format the selected date to the desired format
+        String formattedDate =
+            "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}";
+
+        _textContolerDate.text = formattedDate;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -586,13 +616,12 @@ class _CreditCardBottomSheetCheckOutOrderState
                                         child: TextFormField(
                                           decoration: const InputDecoration(
                                             border: InputBorder.none,
-                                            hintText:
-                                                Const.deliveryAddresshintText,
+                                            hintText: Const.cardHolderName,
                                             hintStyle:
                                                 TextStyle(color: Colors.grey),
                                           ),
                                           controller:
-                                              _textEditingControllerDelivery,
+                                              _textContolerCardHolderName,
                                           // onChanged: (value) {
                                           //   if (value.length > 10) {
                                           //     _textEditingController.text = '';
@@ -640,13 +669,11 @@ class _CreditCardBottomSheetCheckOutOrderState
                                           decoration: const InputDecoration(
                                             counterText: '',
                                             border: InputBorder.none,
-                                            hintText:
-                                                Const.numbertocallhintText,
+                                            hintText: Const.cardNumber,
                                             hintStyle:
                                                 TextStyle(color: Colors.grey),
                                           ),
-                                          controller:
-                                              _textEditingControllerPhoneNumber,
+                                          controller: _textContolerCardNumber,
                                           // onChanged: (value) {
                                           //
                                           // },
@@ -697,6 +724,9 @@ class _CreditCardBottomSheetCheckOutOrderState
                                   children: [
                                     //
                                     GestureDetector(
+                                      onTap: () {
+                                        _selectDate(context);
+                                      },
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: Const.hexToColor(
@@ -711,6 +741,7 @@ class _CreditCardBottomSheetCheckOutOrderState
                                                 horizontal: 10.0),
                                             child: Center(
                                               child: TextFormField(
+                                                controller: _textContolerDate,
                                                 enabled: false,
                                                 decoration:
                                                     const InputDecoration(
@@ -720,11 +751,6 @@ class _CreditCardBottomSheetCheckOutOrderState
                                                   hintStyle: TextStyle(
                                                       color: Colors.grey),
                                                 ),
-                                                controller:
-                                                    _textEditingControllerPhoneNumber,
-                                                // onChanged: (value) {
-                                                //
-                                                // },
                                                 textCapitalization:
                                                     TextCapitalization
                                                         .characters,
@@ -792,8 +818,19 @@ class _CreditCardBottomSheetCheckOutOrderState
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
-                              Navigator.pushNamed(context, '/completeorder');
+                              if (_isTextInputCreditCard(
+                                  context,
+                                  _textContolerCardHolderName,
+                                  _textContolerCardNumber,
+                                  _textContolerDate,
+                                  _textEditingControllerCVV,
+                                  'Please Enter Card Holder Name',
+                                  'Please Enter Card Number',
+                                  'Please Select Date',
+                                  'Please Enter your CVV')) {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, '/completeorder');
+                              }
                             },
                             child: Center(
                               child: _mCompleteOrder(),
@@ -814,7 +851,7 @@ class _CreditCardBottomSheetCheckOutOrderState
 }
 
 //Complete  Order Button
-_mCompleteOrder() => Container(
+Widget _mCompleteOrder() => Container(
       height: 60,
       width: 200,
       decoration: BoxDecoration(
@@ -834,35 +871,37 @@ _mCompleteOrder() => Container(
     );
 
 ////Delivery EditText
-_mDeliveryAddressEdiText(
-        Size screenSize, TextEditingController textEditingControllerDelivery) =>
-    Container(
-      decoration: BoxDecoration(
-          color: Const.hexToColor(Const.editTextColor),
-          borderRadius: BorderRadius.circular(10)),
-      child: SizedBox(
-        width: screenSize.width * .8,
-        height: 60,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Center(
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: Const.deliveryAddresshintText,
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-              controller: textEditingControllerDelivery,
-              // onChanged: (value) {
-              //   if (value.length > 10) {
-              //     _textEditingController.text = '';
-              //   }
-              // },
+Widget _mDeliveryAddressEdiText(
+    Size screenSize, TextEditingController textEditingControllerDelivery) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Const.hexToColor(Const.editTextColor),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: SizedBox(
+      width: screenSize.width * .8,
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Center(
+          child: TextFormField(
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: Const.deliveryAddresshintText,
+              hintStyle: TextStyle(color: Colors.grey),
             ),
+            controller: textEditingControllerDelivery,
+            // onChanged: (value) {
+            //   if (value.length > 10) {
+            //     _textEditingController.text = '';
+            //   }
+            // },
           ),
         ),
       ),
-    );
+    ),
+  );
+}
 
 //Phone Number EditText
 _mDeliveryPhoneNumberEdiText(Size screenSize,
@@ -903,3 +942,96 @@ _mDeliveryPhoneNumberEdiText(Size screenSize,
         ),
       ),
     );
+
+bool _isTextInputNew(
+    BuildContext context,
+    TextEditingController textEditingController1,
+    TextEditingController textEditingController2,
+    String message,
+    message2) {
+  var getText1 = textEditingController1.text;
+  var getText2 = textEditingController2.text;
+  if (getText1.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    return false;
+  } else if (getText2.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message2,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+    return false;
+  }
+
+  return true;
+}
+
+bool _isTextInputCreditCard(
+    BuildContext context,
+    TextEditingController textEditingController1,
+    TextEditingController textEditingController2,
+    TextEditingController textEditingControlle3,
+    TextEditingController textEditingControlle4,
+    String message,
+    message2,
+    message3,
+    message4) {
+  var getText1 = textEditingController1.text;
+  var getText2 = textEditingController2.text;
+  var getText3 = textEditingControlle3.text;
+  var getText4 = textEditingControlle4.text;
+  if (getText1.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    return false;
+  } else if (getText2.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message2,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+    return false;
+  } else if (getText3.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message3,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+    return false;
+  } else if (getText4.isEmpty) {
+    Fluttertoast.showToast(
+        msg: message4,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Const.hexToColor(Const.appColor),
+        textColor: Colors.white,
+        fontSize: 16.0);
+    return false;
+  }
+  return true;
+}
