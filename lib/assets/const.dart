@@ -21,6 +21,12 @@ class Const {
   static const String cancelbutton = '${assets}cancel.png';
   static const String completeOrderImg = '${assets}complete_order.png';
 
+  static const String odertakenIcon = '${assets}oder.png';
+  static const String oderPreparedIcon = '${assets}being_process.png';
+  static const String orderDeliverIcon = '${assets}oderis_delivering.png';
+  static const String checked = '${assets}checked.png';
+  static const String maps = '${assets}maps.png';
+
   //Salad Asset-
   static const String salad1 = 'asset/img/salad/salad1.png';
   static const String salad2 = 'asset/img/salad/salad2.png';
