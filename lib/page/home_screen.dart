@@ -47,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen>
       canPop: false,
       child: Scaffold(
         key: _scaffoldKey, // Assign GlobalKey to Scaffold
-        drawer: Drawer(child: _NavigationDrawerItem(nameOfBuyer)),
+        drawer: Drawer(
+          child: _navigationDrawerItem(context, nameOfBuyer),
+        ),
         appBar: AppBar(
           leading: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -197,7 +199,8 @@ _buildAllProductTabs() => GridView.builder(
     },
     scrollDirection: Axis.vertical);
 
-_NavigationDrawerItem(String? nameOfBuyer) => ListView(children: [
+_navigationDrawerItem(BuildContext context, String? nameOfBuyer) =>
+    ListView(children: [
       Column(
         children: [
           SizedBox(
@@ -216,18 +219,21 @@ _NavigationDrawerItem(String? nameOfBuyer) => ListView(children: [
         ],
       ),
       const NaviGationButton(
+        page: '/trackOrder',
         icons: Const.checked,
         text: 'Track Order',
         width: 30,
         height: 30,
       ),
       const NaviGationButton(
+        page: '',
         icons: Const.favoriteFull,
         text: 'Favorite Salad',
         width: 30,
         height: 30,
       ),
       const NaviGationButton(
+        page: '',
         icons: Const.checked,
         text: 'Track Order',
         width: 30,
@@ -239,19 +245,23 @@ class NaviGationButton extends StatelessWidget {
   final String text;
   final String icons;
   final double width, height;
+  final String page;
   const NaviGationButton(
       {super.key,
       required this.text,
       required this.icons,
       required this.width,
-      required this.height});
+      required this.height,
+      required this.page});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, page);
+        },
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all(Colors.white),
