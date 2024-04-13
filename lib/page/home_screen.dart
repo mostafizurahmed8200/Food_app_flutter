@@ -43,11 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Disable going back with the back button
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         key: _scaffoldKey, // Assign GlobalKey to Scaffold
         drawer: const Drawer(),
