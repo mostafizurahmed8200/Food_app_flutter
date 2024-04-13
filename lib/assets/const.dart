@@ -18,6 +18,7 @@ class Const {
 
   //Card Asset
   static const String fav = '${assets}fav.png';
+  static const String favoriteFull = '${assets}favorite.png';
   static const String cancelbutton = '${assets}cancel.png';
   static const String completeOrderImg = '${assets}complete_order.png';
 
@@ -26,6 +27,7 @@ class Const {
   static const String orderDeliverIcon = '${assets}oderis_delivering.png';
   static const String checked = '${assets}checked.png';
   static const String maps = '${assets}maps.png';
+  static const String profilePic = '${assets}profile.png';
 
   //Salad Asset-
   static const String salad1 = 'asset/img/salad/salad1.png';
@@ -125,6 +127,11 @@ class Const {
     fontFamily: "jost",
   );
 
+  static const TextStyle navTextStyle = TextStyle(
+    fontSize: 18,
+    color: Colors.black,
+    fontFamily: "jost",
+  );
   static const TextStyle h11HeaderTextWhite = TextStyle(
     fontSize: 29,
     color: Colors.white,

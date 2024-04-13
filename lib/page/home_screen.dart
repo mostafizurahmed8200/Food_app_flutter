@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen>
       canPop: false,
       child: Scaffold(
         key: _scaffoldKey, // Assign GlobalKey to Scaffold
-        drawer: const Drawer(),
+        drawer: Drawer(child: _NavigationDrawerItem(nameOfBuyer)),
         appBar: AppBar(
           leading: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -196,3 +196,78 @@ _buildAllProductTabs() => GridView.builder(
       return CardWidget(infoModel: allItem);
     },
     scrollDirection: Axis.vertical);
+
+_NavigationDrawerItem(String? nameOfBuyer) => ListView(children: [
+      Column(
+        children: [
+          SizedBox(
+            width: 100,
+            height: 100,
+            child: CircleAvatar(
+              child: Image.asset(
+                Const.profilePic,
+              ),
+            ),
+          ),
+          Text(
+            nameOfBuyer!,
+            style: Const.h11HeaderText,
+          ),
+        ],
+      ),
+      const NaviGationButton(
+        icons: Const.checked,
+        text: 'Track Order',
+        width: 30,
+        height: 30,
+      ),
+      const NaviGationButton(
+        icons: Const.favoriteFull,
+        text: 'Favorite Salad',
+        width: 30,
+        height: 30,
+      ),
+      const NaviGationButton(
+        icons: Const.checked,
+        text: 'Track Order',
+        width: 30,
+        height: 30,
+      ),
+    ]);
+
+class NaviGationButton extends StatelessWidget {
+  final String text;
+  final String icons;
+  final double width, height;
+  const NaviGationButton(
+      {super.key,
+      required this.text,
+      required this.icons,
+      required this.width,
+      required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+        ),
+        child: ListTile(
+          leading: Image.asset(
+            icons,
+            width: width,
+            height: height,
+          ),
+          title: Text(
+            text,
+            style: Const.navTextStyle,
+          ),
+        ),
+      ),
+    );
+  }
+}
