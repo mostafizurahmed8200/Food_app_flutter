@@ -1,6 +1,6 @@
-# e_commerce
+# Flutter Food Delivery Application
 
-A new Flutter project.
+This is a flutter food delivery mobile application for showcase  purpose-created projects.
 
 ## Getting Started
 
